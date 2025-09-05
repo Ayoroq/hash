@@ -65,4 +65,23 @@ class HashMap {
     }
     return false;
   }
+
+
+  // This method removes an entry if present in the hash map
+  remove(key){
+    const index = this.hash(key);
+    if (index < 0 || index >= this.buckets.length) {
+      throw new Error("Trying to access index out of bounds");
+    }
+    if (this.buckets[index]){
+      for (let i = 0; i < this.buckets[index].length; i++) {
+        if (this.buckets[index][i].key === key) {
+          this.buckets[index].splice(i, 1);
+          this.length--;
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 }
