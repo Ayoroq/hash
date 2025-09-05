@@ -88,4 +88,36 @@ class HashMap {
   getLength(){
     return this.length;
   }
+
+  // This removes all entries in the hash map and resets the length
+  clear(){
+    this.buckets = new Array(this.capacity);
+    this.length = 0;
+  }
+
+  // This returns all keys in the hash map
+  keys(){
+    const keys = [];
+    for (let i = 0; i < this.buckets.length; i++){
+      if (this.buckets[i]){
+        for (let j = 0; j < this.buckets[i].length; j++){
+          keys.push(this.buckets[i][j].key);
+        }
+      }
+    }
+    return keys;
+  }
+
+  // This returns all the values in the hash map
+  values(){
+    const values = [];
+    for (let i = 0; i < this.buckets.length; i++){
+      if (this.buckets[i]){
+        for (let j = 0; j < this.buckets[i].length; j++){
+          values.push(this.buckets[i][j].value);
+        }
+      }
+    }
+    return values;
+  }
 }
