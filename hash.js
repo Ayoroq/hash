@@ -6,7 +6,6 @@ export default class HashMap {
     this.length = 0;
   }
 
-
   // This is the hash function
   hash(key) {
     let hashCode = 0;
@@ -24,8 +23,8 @@ export default class HashMap {
     if (!this.buckets[index]) {
       this.buckets[index] = [];
     }
-    for (let i = 0; i < this.buckets[index].length; i++){
-      if (this.buckets[index][i].key === key){
+    for (let i = 0; i < this.buckets[index].length; i++) {
+      if (this.buckets[index][i].key === key) {
         this.buckets[index][i].value = value;
         return;
       }
@@ -43,7 +42,7 @@ export default class HashMap {
     if (index < 0 || index >= this.buckets.length) {
       throw new Error("Trying to access index out of bounds");
     }
-    if (this.buckets[index]){
+    if (this.buckets[index]) {
       for (let i = 0; i < this.buckets[index].length; i++) {
         if (this.buckets[index][i].key === key) {
           return this.buckets[index][i].value;
@@ -54,12 +53,12 @@ export default class HashMap {
   }
 
   // The has method to check whether or not the key is in the hash map.
-  has(key){
+  has(key) {
     const index = this.hash(key);
     if (index < 0 || index >= this.buckets.length) {
       throw new Error("Trying to access index out of bounds");
     }
-    if (this.buckets[index]){
+    if (this.buckets[index]) {
       for (let i = 0; i < this.buckets[index].length; i++) {
         if (this.buckets[index][i].key === key) {
           return true;
@@ -69,14 +68,13 @@ export default class HashMap {
     return false;
   }
 
-
   // This method removes an entry if present in the hash map
-  remove(key){
+  remove(key) {
     const index = this.hash(key);
     if (index < 0 || index >= this.buckets.length) {
       throw new Error("Trying to access index out of bounds");
     }
-    if (this.buckets[index]){
+    if (this.buckets[index]) {
       for (let i = 0; i < this.buckets[index].length; i++) {
         if (this.buckets[index][i].key === key) {
           this.buckets[index].splice(i, 1);
@@ -88,22 +86,26 @@ export default class HashMap {
     return false;
   }
 
-  getLength(){
+  getLength() {
     return this.length;
   }
 
+  getCapacity() {
+    return this.capacity;
+  }
+
   // This removes all entries in the hash map and resets the length
-  clear(){
+  clear() {
     this.buckets = new Array(this.capacity);
     this.length = 0;
   }
 
   // This returns all keys in the hash map
-  keys(){
+  keys() {
     const keys = [];
-    for (let i = 0; i < this.buckets.length; i++){
-      if (this.buckets[i]){
-        for (let j = 0; j < this.buckets[i].length; j++){
+    for (let i = 0; i < this.buckets.length; i++) {
+      if (this.buckets[i]) {
+        for (let j = 0; j < this.buckets[i].length; j++) {
           keys.push(this.buckets[i][j].key);
         }
       }
@@ -112,11 +114,11 @@ export default class HashMap {
   }
 
   // This returns all the values in the hash map
-  values(){
+  values() {
     const values = [];
-    for (let i = 0; i < this.buckets.length; i++){
-      if (this.buckets[i]){
-        for (let j = 0; j < this.buckets[i].length; j++){
+    for (let i = 0; i < this.buckets.length; i++) {
+      if (this.buckets[i]) {
+        for (let j = 0; j < this.buckets[i].length; j++) {
           values.push(this.buckets[i][j].value);
         }
       }
@@ -125,11 +127,11 @@ export default class HashMap {
   }
 
   // This returns all the key value pairs present in the map
-  entries(){
+  entries() {
     const entries = [];
-    for (let i = 0; i < this.buckets.length; i++){
-      if (this.buckets[i]){
-        for (let j = 0; j < this.buckets[i].length; j++){
+    for (let i = 0; i < this.buckets.length; i++) {
+      if (this.buckets[i]) {
+        for (let j = 0; j < this.buckets[i].length; j++) {
           entries.push([this.buckets[i][j].key, this.buckets[i][j].value]);
         }
       }
@@ -138,17 +140,36 @@ export default class HashMap {
   }
 
   // This resize the bucket when the bucket is getting filled
-  _resize(){
+  _resize() {
     const oldBuckets = this.buckets;
     this.capacity *= 2;
     this.buckets = new Array(this.capacity);
     this.length = 0;
-    for (let i = 0; i < oldBuckets.length; i++){
-      if (oldBuckets[i]){
-        for (let j = 0; j < oldBuckets[i].length; j++){
-            this.set(oldBuckets[i][j].key, oldBuckets[i][j].value);
+    for (let i = 0; i < oldBuckets.length; i++) {
+      if (oldBuckets[i]) {
+        for (let j = 0; j < oldBuckets[i].length; j++) {
+          this.set(oldBuckets[i][j].key, oldBuckets[i][j].value);
         }
       }
     }
+  }
+}
+
+class HashSet {
+  constructor(capacity = 16) {
+    this.capacity = capacity;
+    this.buckets = new Array(this.capacity);
+    this.loadFactor = 0.75;
+    this.length = 0;
+  }
+
+  hash(key) {
+    let hashCode = 0;
+    const primeNumber = 31;
+    for (let i = 0; i < key.length; i++) {
+      hashCode = primeNumber * hashCode + key.charCodeAt(i);
+      hashCode %= this.capacity;
+    }
+    return hashCode;
   }
 }
