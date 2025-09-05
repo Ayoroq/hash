@@ -84,4 +84,8 @@ class HashMap {
     }
     return false;
   }
+
+  getLength(){
+    return this.length;
+  }
 }
