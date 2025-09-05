@@ -6,6 +6,8 @@ class HashMap {
     this.length = 0;
   }
 
+
+  // This is the hash function
   hash(key) {
     let hashCode = 0;
     const primeNumber = 31;
@@ -16,6 +18,7 @@ class HashMap {
     return hashCode;
   }
 
+  // The set method to add values to the buckets
   set(key, value) {
     const index = this.hash(key);
     if (!this.buckets[index]) {
@@ -31,6 +34,7 @@ class HashMap {
     this.length++;
   }
 
+  // The get method to retrieve values from the buckets
   get(key) {
     const index = this.hash(key);
     if (index < 0 || index >= this.buckets.length) {
@@ -44,5 +48,21 @@ class HashMap {
       }
     }
     return null;
+  }
+
+  // The has method to check whether or not the key is in the hash map.
+  has(key){
+    const index = this.hash(key);
+    if (index < 0 || index >= this.buckets.length) {
+      throw new Error("Trying to access index out of bounds");
+    }
+    if (this.buckets[index]){
+      for (let i = 0; i < this.buckets[index].length; i++) {
+        if (this.buckets[index][i].key === key) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 }
