@@ -32,6 +32,9 @@ class HashMap {
     }
     this.buckets[index].push({ key, value });
     this.length++;
+    if (this.length / this.capacity >= this.loadFactor) {
+      this._resize();
+    }
   }
 
   // The get method to retrieve values from the buckets
@@ -131,5 +134,19 @@ class HashMap {
       }
     }
     return entries;
+  }
+
+  _resize(){
+    const oldBuckets = this.buckets;
+    this.capacity *= 2;
+    this.buckets = new Array(this.capacity);
+    this.length = 0;
+    for (let i = 0; i < oldBuckets.length; i++){
+      if (oldBuckets[i]){
+        for (let j = 0; j < oldBuckets[i].length; j++){
+            this.set(oldBuckets[i][j].key, oldBuckets[i][j].value);
+        }
+      }
+    }
   }
 }
