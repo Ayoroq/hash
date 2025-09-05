@@ -172,4 +172,67 @@ class HashSet {
     }
     return hashCode;
   }
+
+  add(key){
+    const index = this.hash(key);
+    if (!this.buckets[index]) {
+      this.buckets[index] = [];
+    }
+    for (let i = 0; i < this.buckets[index].length; i++) {
+        if (this.buckets[index][i] === key) {
+        return;
+      }
+    }
+    this.buckets[index].push(key);
+    this.length++;
+
+    if (this.length / this.capacity >= this.loadFactor) {
+      this._resize();
+    }
+  }
+
+  has(key){
+    const index = this.hash(key);
+    if (index < 0 || index >= this.buckets.length) {
+        throw new Error("Trying to access index out of bounds");
+    }
+    if (this.buckets[index]) {
+        for (let i = 0; i < this.buckets[index].length; i++) {
+            if (this.buckets[index][i] === key) {
+                return true;
+            }
+        }
+    }
+    return false;
+  }
+
+  getLength() {
+    return this.length;
+  }
+
+  getCapacity() {
+    return this.capacity;
+  }
+
+
+  // This resize the bucket when the bucket is getting filled
+  _resize() {
+    const oldBuckets = this.buckets;
+    this.capacity *= 2;
+    this.buckets = new Array(this.capacity);
+    this.length = 0;
+    for (let i = 0; i < oldBuckets.length; i++) {
+      if (oldBuckets[i]) {
+        for (let j = 0; j < oldBuckets[i].length; j++) {
+          this.add(oldBuckets[i][j]);
+        }
+      }
+    }
+  }
+
+  // This removes all entries in the hash map and resets the length
+  clear() {
+    this.buckets = new Array(this.capacity);
+    this.length = 0;
+  }
 }
