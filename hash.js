@@ -120,4 +120,16 @@ class HashMap {
     }
     return values;
   }
+
+  entries(){
+    const entries = [];
+    for (let i = 0; i < this.buckets.length; i++){
+      if (this.buckets[i]){
+        for (let j = 0; j < this.buckets[i].length; j++){
+          entries.push([this.buckets[i][j].key, this.buckets[i][j].value]);
+        }
+      }
+    }
+    return entries;
+  }
 }
