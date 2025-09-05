@@ -1,4 +1,4 @@
-class HashMap {
+export default class HashMap {
   constructor(loadFactor = 0.75, capacity = 16) {
     this.loadFactor = loadFactor;
     this.capacity = capacity;
@@ -124,6 +124,7 @@ class HashMap {
     return values;
   }
 
+  // This returns all the key value pairs present in the map
   entries(){
     const entries = [];
     for (let i = 0; i < this.buckets.length; i++){
@@ -136,6 +137,7 @@ class HashMap {
     return entries;
   }
 
+  // This resize the bucket when the bucket is getting filled
   _resize(){
     const oldBuckets = this.buckets;
     this.capacity *= 2;
